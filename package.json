@@ -12,7 +12,8 @@
     "@vercel/og": "^0.0.20",
     "next": "13.0.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "twitter-api-v2": "^1.12.9"
   },
   "devDependencies": {
     "eslint": "8.26.0",
