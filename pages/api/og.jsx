@@ -4,9 +4,17 @@ export const config = {
   runtime: "experimental-edge",
 };
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const { searchParams } = new URL(req.url);
   const merkleRoot = searchParams.get("merkleRoot");
+
+  const searchcasterUrl = "https://searchcaster.xyz/api/search?merkleRoot=";
+  const searchcasterResponse = await fetch(`${searchcasterUrl}${merkleRoot}`);
+  const allCasts = await searchcasterResponse.json();
+  const totalCasts = allCasts.meta.count;
+  const castText = allCasts.casts[totalCasts - 1].body.data.text;
+  const castUsername = allCasts.casts[totalCasts - 1].body.username;
+  const castAvatar = allCasts.casts[totalCasts - 1].meta.avatar;
 
   return new ImageResponse(
     (
@@ -23,13 +31,15 @@ export default function handler(req, res) {
       >
         <div tw="bg-purple-50 flex rounded-3xl shadow-lg">
           <div tw="flex md:items-center w-7/8 p-6">
-            <div tw="w-16 h-16 bg-purple-300 rounded-full mr-5 self-start"></div>
+            <img
+              src={castAvatar}
+              tw="w-16 h-16 rounded-full mr-5 self-start"
+            ></img>
             <div tw="flex flex-col flex-1">
-              <span tw="text-purple-400 text-xl">@handlename</span>
-              <span tw="text-purple-800 text-2xl font-bold">
-                hm ya gp gotta think on it more also feel free to dc if you
-                wanna chat ab them :)
-              </span>
+              <span tw="text-purple-400 text-xl">@{castUsername}</span>
+              <div tw="text-purple-800 text-2xl" style={{ whiteSpace: "pre-wrap" }}>
+                {castText}
+              </div>
             </div>
           </div>
         </div>
@@ -48,7 +58,7 @@ export default function handler(req, res) {
     ),
     {
       width: 600,
-      height: 600,
+      height: 800,
     }
   );
 }
