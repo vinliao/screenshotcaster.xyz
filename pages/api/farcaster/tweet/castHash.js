@@ -5,10 +5,10 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     const dev = process.env.NODE_ENV !== 'production';
     const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
-    const { merkle } = req.query;
+    const { castHash } = req.query;
 
     const searchcasterUrl = "https://searchcaster.xyz/api/search?merkleRoot=";
-    const searchcasterResponse = await fetch(`${searchcasterUrl}${merkle}`);
+    const searchcasterResponse = await fetch(`${searchcasterUrl}${castHash}`);
     const allCasts = await searchcasterResponse.json();
     const totalCasts = allCasts.meta.count;
     const castImageLink = allCasts.casts[totalCasts - 1].body.data.image;
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
       castImageMediaId = await twitterClient.v1.uploadMedia(imageBuffer, { mimeType: EUploadMimeType.Png });
     }
 
-    const imageData = await fetch(`${serverUrl}/api/farcaster/og?merkleRoot=${merkle}`);
+    const imageData = await fetch(`${serverUrl}/api/farcaster/og?merkleRoot=${castHash}`);
     const imageArrayBuffer = await imageData.arrayBuffer();
     const imageBuffer = Buffer.from(imageArrayBuffer);
     const mediaId = await twitterClient.v1.uploadMedia(imageBuffer, { mimeType: EUploadMimeType.Png });

@@ -6,10 +6,10 @@ export const config = {
 
 export default async function handler(req, res) {
   const { searchParams } = new URL(req.url);
-  const merkleRoot = searchParams.get("merkleRoot");
+  const castHash = searchParams.get("castHash");
 
   const searchcasterUrl = "https://searchcaster.xyz/api/search?merkleRoot=";
-  const searchcasterResponse = await fetch(`${searchcasterUrl}${merkleRoot}`);
+  const searchcasterResponse = await fetch(`${searchcasterUrl}${castHash}`);
   const allCasts = await searchcasterResponse.json();
   const totalCasts = allCasts.meta.count;
   const castText = allCasts.casts[totalCasts - 1].body.data.text;
@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
   // link messes with the css overflow,
   const urlRegex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g;
-  const castTextWithoutUrl = castText.replaceAll(urlRegex, "[link redacted]");
+  const castTextWithoutUrl = castText.replaceAll(urlRegex, "[link]");
 
   return new ImageResponse(
     (

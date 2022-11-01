@@ -10,11 +10,9 @@ export default async function handler(req, res) {
     let dbCasts = [];
 
     // call data from supabase
-    // [parentMerkle, merkleRoot, twitterLink]
     const { data: supabaseData, error } = await supabase
       .from('farcaster-twitter-bot')
       .select('parent_merkle');
-
 
     if (error) console.log(error);
 
