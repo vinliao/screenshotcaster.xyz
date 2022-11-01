@@ -1,11 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
-console.log(supabase)
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     // change @perl to @tweet
-    const searchcasterResponse = await fetch('https://searchcaster.xyz/api/search?text=@perl&count=5');
+    const searchcasterResponse = await fetch('https://searchcaster.xyz/api/search?text=@perl&count=3');
     const data = await searchcasterResponse.json();
     const casts = data.casts;
     let dbCasts = [];
@@ -49,11 +48,11 @@ export default async function handler(req, res) {
 
     const dev = process.env.NODE_ENV !== 'production';
     const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
+    const fullUrl = `${serverUrl}/api/farcaster/tweet/${merkle}`;
+    console.log(fullUrl);
 
     toBeTweeted.forEach(async merkle => {
-      await fetch(`${serverUrl}/api/farcaster/tweet/${merkle}`, {
-        method: "POST"
-      });
+      await fetch(fullUrl, { method: "POST" });
     });
   }
 
