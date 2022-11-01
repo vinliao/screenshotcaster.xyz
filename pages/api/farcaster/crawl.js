@@ -2,9 +2,9 @@ import { createClient } from '@supabase/supabase-js';
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 export default async function handler(req, res) {
-  if (req.method === "GET") {
+  if (req.method === "POST") {
     // change @perl to @tweet
-    const searchcasterResponse = await fetch('https://searchcaster.xyz/api/search?text=@perl&count=5');
+    const searchcasterResponse = await fetch('https://searchcaster.xyz/api/search?text=@perl&count=2');
     const data = await searchcasterResponse.json();
     const casts = data.casts;
     let dbCasts = [];
