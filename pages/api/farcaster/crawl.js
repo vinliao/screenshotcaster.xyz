@@ -3,7 +3,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    // change @launch to @tweet
+    // change @perl to @tweet
     const searchcasterResponse = await fetch('https://searchcaster.xyz/api/search?text=@perl&count=5');
     const data = await searchcasterResponse.json();
     const casts = data.casts;
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       const parentMerkle = cast.body.data.replyParentMerkleRoot; // turn this into image
       const castMerkle = cast.merkleRoot; // reply the twitter link to this
 
-      if (parentMerkle && castText.startsWith("@launch")) {
+      if (parentMerkle && castText.startsWith("@perl")) {
         // console.log(castText);
         // console.log(parentMerkle);
         // console.log(castMerkle);
