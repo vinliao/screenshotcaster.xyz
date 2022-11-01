@@ -4,7 +4,7 @@ import { twitterClient } from './client';
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const dev = process.env.NODE_ENV !== 'production';
-    const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app/';
+    const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
     const { merkle } = req.query;
 
     const searchcasterUrl = "https://searchcaster.xyz/api/search?merkleRoot=";
