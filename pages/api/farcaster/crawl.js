@@ -48,10 +48,10 @@ export default async function handler(req, res) {
 
     const dev = process.env.NODE_ENV !== 'production';
     const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
-    const fullUrl = `${serverUrl}/api/farcaster/tweet/${merkle}`;
-    console.log(fullUrl);
 
     toBeTweeted.forEach(async merkle => {
+      const fullUrl = `${serverUrl}/api/farcaster/tweet/${merkle}`;
+      console.log(fullUrl);
       await fetch(fullUrl, { method: "POST" });
     });
   }
