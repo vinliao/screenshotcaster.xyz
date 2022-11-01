@@ -11,6 +11,8 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.0.4",
     "@vercel/og": "^0.0.20",
+    "canonicalize": "^1.0.8",
+    "ethers": "^5.7.2",
     "next": "13.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
