@@ -15,6 +15,9 @@ export default async function handler(req, res) {
       .from('farcaster-twitter-bot')
       .select('parent_merkle');
 
+
+    if (error) console.log(error);
+
     supabaseData.forEach(oneSupabaseData => {
       dbCasts.push(oneSupabaseData.parent_merkle);
     });
@@ -42,6 +45,7 @@ export default async function handler(req, res) {
           const { error } = await supabase
             .from('farcaster-twitter-bot')
             .insert({ cast_merkle: castMerkle, parent_merkle: parentMerkle, twitter_link: 'asdf' });
+          if (error) console.log(error);
         }
       }
     });
