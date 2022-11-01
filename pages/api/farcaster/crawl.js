@@ -4,7 +4,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 export default async function handler(req, res) {
   if (req.method === "POST") {
     // change @launch to @tweet
-    const searchcasterResponse = await fetch('https://searchcaster.xyz/api/search?text=@launch&count=10');
+    const searchcasterResponse = await fetch('https://searchcaster.xyz/api/search?text=@perl&count=5');
     const data = await searchcasterResponse.json();
     const casts = data.casts;
     let dbCasts = [];
@@ -37,6 +37,7 @@ export default async function handler(req, res) {
         // if parentMerkle doesn't exist on the db
         if (dbCasts.indexOf(parentMerkle) == -1 && toBeTweeted.indexOf(parentMerkle) == -1) {
           toBeTweeted.push(parentMerkle);
+          console.log(parentMerkle);
 
           const { error } = await supabase
             .from('farcaster-twitter-bot')
