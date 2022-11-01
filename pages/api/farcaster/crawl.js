@@ -4,7 +4,7 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 export default async function handler(req, res) {
   if (req.method === "POST") {
     // change @perl to @tweet
-    const searchcasterResponse = await fetch('https://searchcaster.xyz/api/search?text=@perl&count=3');
+    const searchcasterResponse = await fetch('https://searchcaster.xyz/api/search?text=@perl&count=12');
     const data = await searchcasterResponse.json();
     const casts = data.casts;
     let dbCasts = [];
