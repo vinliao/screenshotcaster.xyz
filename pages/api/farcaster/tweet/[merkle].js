@@ -11,7 +11,10 @@ export default async function handler(req, res) {
     const imageArrayBuffer = await imageData.arrayBuffer();
     const imageBuffer = Buffer.from(imageArrayBuffer);
     const mediaId = await twitterClient.v1.uploadMedia(imageBuffer, { mimeType: EUploadMimeType.Png });
-    await twitterClient.v2.tweet(``, { media: { media_ids: [mediaId] } });
+    const twitterResponse = await twitterClient.v2.tweet(``, { media: { media_ids: [mediaId] } });
+    const twitterLink = twitterResponse.data.text;
+
+    // maybe the cast reply should happen here?
 
     res.status(200).json({ status: 'success' });
   } else {

@@ -16,9 +16,9 @@ export default async function handler(req, res) {
   const castUsername = allCasts.casts[totalCasts - 1].body.username;
   const castAvatar = allCasts.casts[totalCasts - 1].meta.avatar;
 
-  // link messes with the css overflow, 
-  const urlRegex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g
-  const castTextWithoutUrl = castText.replaceAll(urlRegex, '[link redacted]')
+  // link messes with the css overflow,
+  const urlRegex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g;
+  const castTextWithoutUrl = castText.replaceAll(urlRegex, "[link redacted]");
 
   return new ImageResponse(
     (
@@ -41,9 +41,7 @@ export default async function handler(req, res) {
             ></img>
             <div tw="flex flex-col flex-1">
               <span tw="text-purple-400 text-xl">@{castUsername}</span>
-              <span tw="text-purple-800 text-2xl" style={{ whiteSpace: "pre-wrap" }}>
-                {castTextWithoutUrl}
-              </span>
+              <p tw="text-purple-800 text-2xl" style={{whiteSpace: "pre-wrap"}}>{castTextWithoutUrl}</p>
             </div>
           </div>
         </div>
