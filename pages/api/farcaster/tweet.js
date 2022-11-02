@@ -2,10 +2,12 @@ import { EUploadMimeType } from 'twitter-api-v2';
 import { twitterClient } from './client';
 
 export default async function handler(req, res) {
-  if (req.method === "POST") {
+  if (req.method === "GET") {
     const dev = process.env.NODE_ENV !== 'production';
     const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
-    const { castHash } = req.query;
+    const { searchParams } = new URL(`${serverUrl}${req.url}`);
+    const castHash = searchParams.get("castHash");
+    const reply = searchParams.get("reply");
     const tweetContent = req.body;
 
     const searchcasterUrl = "https://searchcaster.xyz/api/search?merkleRoot=";
@@ -23,7 +25,14 @@ export default async function handler(req, res) {
       castImageMediaId = await twitterClient.v1.uploadMedia(imageBuffer, { mimeType: EUploadMimeType.Png });
     }
 
-    const imageData = await fetch(`${serverUrl}/api/farcaster/og?castHash=${castHash}`);
+    let imageData;
+    if (reply) {
+      console.log('with reply');
+      imageData = await fetch(`${serverUrl}/api/farcaster/og?castHash=${castHash}&reply=true`);
+    } else {
+      console.log('without reply');
+      imageData = await fetch(`${serverUrl}/api/farcaster/og?castHash=${castHash}`);
+    }
     const imageArrayBuffer = await imageData.arrayBuffer();
     const imageBuffer = Buffer.from(imageArrayBuffer);
     const mediaId = await twitterClient.v1.uploadMedia(imageBuffer, { mimeType: EUploadMimeType.Png });
