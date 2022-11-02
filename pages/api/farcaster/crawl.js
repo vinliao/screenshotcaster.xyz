@@ -1,62 +1,29 @@
-import { createClient } from '@supabase/supabase-js';
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+// import { startPolling } from '@big-whale-labs/botcaster';
+
 
 export default async function handler(req, res) {
-  if (req.method === "POST") {
-    // change @perl to @tweet
-    const searchcasterResponse = await fetch('https://searchcaster.xyz/api/search?text=@perl&count=12');
-    const data = await searchcasterResponse.json();
-    const casts = data.casts;
-    let dbCasts = [];
 
-    // call data from supabase
-    const { data: supabaseData, error } = await supabase
-      .from('farcaster-twitter-bot')
-      .select('parent_merkle');
+  const botAddress = "0x0076F74CC966fdD705deD40df8aB86604e4b5759";
+  const data = await fetch(`https://api.farcaster.xyz/v1/notifications?address=${botAddress}&per_page=10`);
+  const casts = await data.json();
+  console.log(casts);
+  // store notifications id string (merkle root cast hash) in redis
+  // compare notification with those strings
+  console.log(casts.result.notifications);
 
-    if (error) console.log(error);
-
-    supabaseData.forEach(oneSupabaseData => {
-      dbCasts.push(oneSupabaseData.parent_merkle);
-    });
-
-
-    // fill these two arrays by comparing data from supabase and the casts
-    let toBeTweeted = [];
-    let hasBeenTweeted = [];
-
-    casts.forEach(async cast => {
-      const castText = cast.body.data.text;
-      const parentMerkle = cast.body.data.replyParentMerkleRoot; // turn this into image
-      const castMerkle = cast.merkleRoot; // reply the twitter link to this
-
-      if (parentMerkle && castText.startsWith("@perl")) {
-        // console.log(castText);
-        // console.log(parentMerkle);
-        // console.log(castMerkle);
-
-        // if parentMerkle doesn't exist on the db
-        if (dbCasts.indexOf(parentMerkle) == -1 && toBeTweeted.indexOf(parentMerkle) == -1) {
-          toBeTweeted.push(parentMerkle);
-          console.log(parentMerkle);
-
-          const { error } = await supabase
-            .from('farcaster-twitter-bot')
-            .insert({ cast_merkle: castMerkle, parent_merkle: parentMerkle, twitter_link: 'asdf' });
-          if (error) console.log(error);
-        }
-      }
-    });
-
-    const dev = process.env.NODE_ENV !== 'production';
-    const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
-
-    toBeTweeted.forEach(async merkle => {
-      const fullUrl = `${serverUrl}/api/farcaster/tweet/${merkle}`;
-      console.log(fullUrl);
-      await fetch(fullUrl, { method: "POST" });
-    });
-  }
+  // if (req.method === "GET") {
+  //   startPolling(botAddress, (notification) => {
+  //     if (notification.type == "cast-reply") {
+  //       const reply = notification.replyCast;
+  //       // case sensitive?
+  //       if (reply.text.startsWith("You")) {
+  //         // then do something
+  //         console.log(notification);
+  //         // what if i just like, then the like is a sign that i've posted the thing?
+  //         // less tedious than having to spin up an entire fucking backend loL
+  //       }
+  //     }
+  //   });
 
   res.status(200).json({ status: 'success' });
 }
