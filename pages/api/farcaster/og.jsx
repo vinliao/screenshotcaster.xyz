@@ -39,9 +39,9 @@ export default async function handler(req, res) {
               src={castAvatar}
               tw="w-16 h-16 rounded-full mr-5 self-start"
             ></img>
-            <div tw="flex flex-col flex-1">
+            <div tw="flex flex-col shrink">
               <span tw="text-purple-400 text-xl">@{castUsername}</span>
-              <p tw="text-purple-800 text-2xl" style={{whiteSpace: "pre-wrap"}}>{castTextWithoutUrl}</p>
+              <p tw="text-purple-800 text-2xl" style={{whiteSpace: "pre-line"}}>{castTextWithoutUrl}</p>
             </div>
           </div>
         </div>
