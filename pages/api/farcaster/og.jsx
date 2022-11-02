@@ -41,7 +41,7 @@ export default async function handler(req, res) {
             ></img>
             <div tw="flex flex-col shrink">
               <span tw="text-purple-400 text-xl">@{castUsername}</span>
-              <p tw="text-purple-800 text-2xl" style={{whiteSpace: "pre-line"}}>{castTextWithoutUrl}</p>
+              <span tw="text-purple-800 text-2xl" style={{whiteSpace: "pre-line"}}>{castTextWithoutUrl}</span>
             </div>
           </div>
         </div>
