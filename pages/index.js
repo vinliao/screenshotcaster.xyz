@@ -23,7 +23,13 @@ export default function Home() {
   async function sendTweet() {
     const dev = process.env.NODE_ENV !== 'production';
     const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
-    const fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHash}`;
+    let fetchUrl;
+
+    if (withReply) {
+      fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHash}&reply=true`;
+    } else {
+      fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHash}`;
+    }
 
     await fetch(fetchUrl, {
       method: "POST",
