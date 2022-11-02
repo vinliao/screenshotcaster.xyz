@@ -1,24 +1,29 @@
-import TextareaAutosize from 'react-textarea-autosize';
 import { useState } from 'react';
-import Image from 'next/image';
 
 export default function Home() {
   const [tweetInput, setTweetInput] = useState("");
   const [castHash, setCastHash] = useState("");
   const [imageSrc, setImageSrc] = useState("");
+  const [withReply, setWithReply] = useState(false);
 
   async function makeImage() {
     const dev = process.env.NODE_ENV !== 'production';
     const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
-    const imageUrl = `${serverUrl}/api/farcaster/og?castHash=${castHash}`;
+    let imageUrl;
+
+    if (withReply) {
+      imageUrl = `${serverUrl}/api/farcaster/og?castHash=${castHash}&reply=true`;
+    } else {
+      imageUrl = `${serverUrl}/api/farcaster/og?castHash=${castHash}`;
+    }
+
     setImageSrc(imageUrl);
-    console.log(imageSrc);
   }
 
   async function sendTweet() {
     const dev = process.env.NODE_ENV !== 'production';
     const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
-    const fetchUrl = `${serverUrl}/api/farcaster/tweet/${castHash}`;
+    const fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHash}`;
 
     await fetch(fetchUrl, {
       method: "POST",
@@ -30,10 +35,21 @@ export default function Home() {
     setImageSrc('');
   }
 
+  function setReplyChecked() {
+    setWithReply(!withReply);
+  }
+
   return (
     <div className="max-w-md mx-auto text-pink-800 py-4">
+      <div className='mb-2 flex items-center'>
+        <input type="checkbox" className="form-checkbox rounded text-pink-500 mr-2 focus:border-0 active:border-0"
+          checked={withReply}
+          onChange={setReplyChecked}
+        />
+        <span>include reply?</span>
+      </div>
       <div className="flex shadow-sm mb-5">
-        <input type="text" className="p-2 flex-1 border border-pink-200 rounded-l-md focus:outline-none focus:border-pink-300 focus:ring-inset focus:ring-pink-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="Cast hash to tweet: 0xf038abb..."
+        <input type="text" className="p-2 flex-1 border border-pink-200 rounded-l-md focus:border-pink-300 focus:ring focus:ring-inset focus:ring-pink-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="Cast hash to tweet: 0xf038abb..."
           onChange={(e) => setCastHash(e.target.value)}
           value={castHash}
           onKeyDown={(e) => {

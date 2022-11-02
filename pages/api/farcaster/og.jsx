@@ -6,7 +6,6 @@ export const config = {
 
 export default async function handler(req) {
   const { searchParams } = new URL(req.url);
-  console.log(req.url)
   const castHash = searchParams.get("castHash");
   const reply = searchParams.get("reply");
 
