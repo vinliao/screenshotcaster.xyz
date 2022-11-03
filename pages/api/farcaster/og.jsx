@@ -44,7 +44,6 @@ export default async function handler(req) {
       urlRegex,
       "[link]"
     );
-    // console.log(parentCastAvatar, parentCastUsername, parentCastText);
 
     return new ImageResponse(
       (
@@ -68,7 +67,7 @@ export default async function handler(req) {
               ></img>
               <div tw="flex flex-col shrink">
                 <div tw="flex">
-                  <span tw="text-neutral-500 text-lg mr-2">
+                  <span tw="text-neutral-400 text-lg mr-2">
                     {parentCastDisplayName}
                   </span>
                   <span tw="text-neutral-400 text-lg">
@@ -94,7 +93,7 @@ export default async function handler(req) {
               ></img>
               <div tw="flex flex-col shrink">
                 <div tw="flex">
-                  <span tw="text-purple-500 text-xl mr-2">
+                  <span tw="text-purple-400 text-xl mr-2">
                     {castDisplayName}
                   </span>
                   <span tw="text-purple-400 text-xl">@{castUsername}</span>
@@ -148,9 +147,11 @@ export default async function handler(req) {
               tw="w-16 h-16 rounded-full mr-5 self-start"
             ></img>
             <div tw="flex flex-col shrink">
-              <div tw="flex mb-4">
-                <span tw="text-purple-500 text-xl mr-2">{castDisplayName}</span>
-                <span tw="text-purple-400 text-xl">@{castUsername}</span>
+              <div tw="flex">
+                <span tw="text-purple-400 text-xl mr-2">{castDisplayName}</span>
+                <span tw="text-purple-400 text-xl">
+                  @{castUsername}
+                </span>
               </div>
               <div
                 tw="text-purple-800 text-2xl"
