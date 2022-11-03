@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Link from 'next/link';
-import { saveAs } from 'file-saver';
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
@@ -77,27 +76,23 @@ export default function Home() {
     setImageLoading(false);
   }
 
-  function downloadImage() {
-    saveAs(imageSrc, 'image.png');
-  }
-
   return (
-    <div className="max-w-md mx-auto text-pink-800 py-4">
+    <div className="max-w-md mx-auto text-purple-800 py-4">
 
       <div className='flex'>
         <div className='flex-1'></div>
         <Link href={"/about"} className="font-mono underline">about</Link>
       </div>
 
-      <label className='mb-2 flex items-center'>
-        <input type="checkbox" className="form-checkbox rounded border border-pink-300 text-pink-500 mr-2 focus:ring focus:ring-transparent"
+      <label className='mb-1 flex items-center'>
+        <input type="checkbox" className="form-checkbox rounded border border-purple-300 text-purple-500 mr-2 focus:ring focus:ring-transparent"
           checked={withReply}
           onChange={setReplyChecked}
         />
-        <span className='text-neutral-400'>include parent?</span>
+        <span className='text-neutral-400'>include parent cast?</span>
       </label>
-      <div className="flex shadow-sm mb-5">
-        <input type="text" className="p-2 flex-1 border border-pink-200 rounded-l-md focus:border-pink-300 focus:ring focus:ring-inset focus:ring-pink-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="searchcaster or discove link, or a casthash"
+      <div className="flex shadow-sm">
+        <input type="text" className="p-2 flex-1 border border-purple-200 rounded-tl-lg focus:border-purple-300 focus:ring focus:ring-inset focus:ring-purple-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="searchcaster or discove link, or a casthash"
           onChange={(e) => setUserInput(e.target.value)}
           value={userInput}
           onKeyDown={(e) => {
@@ -107,11 +102,11 @@ export default function Home() {
           }}
         />
         {!imageLoading ?
-          <button className="font-mono bg-pink-300 rounded-r-md py-2 px-4 hover:bg-pink-600 hover:text-pink-50 transition focus:outline-none" onClick={() => {
+          <button className="font-mono bg-purple-300 rounded-tr-lg py-2 px-4 hover:bg-purple-600 hover:text-purple-50 transition focus:outline-none" onClick={() => {
             makeImage();
           }}>Make</button>
           :
-          <button className="font-mono bg-neutral-300 rounded-r-md py-2 px-4 focus:outline-none text-neutral-500 hover:pointer-none">
+          <button className="font-mono bg-neutral-300 rounded-tr-lg py-2 px-4 focus:outline-none text-neutral-500 hover:pointer-none">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 animate-spin">
               <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
             </svg>
@@ -128,24 +123,24 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.3 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                className='h-full w-full backdrop-blur-md absolute'></motion.div>
+                className='h-full w-full backdrop-blur-md absolute rounded-b-lg'></motion.div>
             }
           </AnimatePresence>
-          <img src={imageSrc} alt="" onLoad={imageDoneLoaded} className='rounded-t-2xl' />
+          <img src={imageSrc} alt="" onLoad={imageDoneLoaded} className='rounded-b-lg shadow-sm border border-t-0 border-purple-200' />
         </div>
       }
 
-      {imageSrc != "" && !imageLoading &&
+      {/* {imageSrc != "" && !imageLoading &&
         <div className="flex">
-          <button className="font-mono bg-pink-300 rounded-b-2xl py-2 px-4 hover:bg-pink-600 hover:text-pink-50 transition focus:outline-none flex-1" onClick={() => {
+          <button className="font-mono bg-purple-300 rounded-b-2xl py-2 px-4 hover:bg-purple-600 hover:text-purple-50 transition focus:outline-none flex-1" onClick={() => {
             downloadImage();
           }}>download</button>
         </div>
-      }
+      } */}
 
       {/* {imageSrc != "" &&
         <div className="flex">
-          <input type="text" className="p-2 flex-1 border-l border-b border-pink-200 rounded-bl-2xl focus:outline-none focus:border-pink-300 focus:ring-inset focus:ring-pink-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="by @whatever cc @placeholder"
+          <input type="text" className="p-2 flex-1 border-l border-b border-purple-200 rounded-bl-2xl focus:outline-none focus:border-purple-300 focus:ring-inset focus:ring-purple-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="by @whatever cc @placeholder"
             onChange={(e) => setTweetInput(e.target.value)}
             value={tweetInput}
             onKeyDown={(e) => {
@@ -154,7 +149,7 @@ export default function Home() {
               }
             }}
           />
-          <button className="font-mono bg-pink-300 rounded-br-2xl py-2 px-4 hover:bg-pink-600 hover:text-pink-50 transition focus:outline-none" onClick={() => {
+          <button className="font-mono bg-purple-300 rounded-br-2xl py-2 px-4 hover:bg-purple-600 hover:text-purple-50 transition focus:outline-none" onClick={() => {
             sendTweet();
           }}>Tweet</button>
         </div>
