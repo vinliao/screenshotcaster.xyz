@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function Home() {
   const [tweetInput, setTweetInput] = useState("");
   const [userInput, setUserInput] = useState("");
   const [imageSrc, setImageSrc] = useState("");
   const [withReply, setWithReply] = useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
 
   function callImageAPI(castHash) {
     console.log(`making image ${castHash}`);
@@ -27,7 +29,7 @@ export default function Home() {
   }
 
   async function makeImage() {
-
+    setImageLoading(true);
     if (isCastHash(userInput)) {
       callImageAPI(userInput);
     } else {
@@ -69,8 +71,18 @@ export default function Home() {
     setWithReply(!withReply);
   }
 
+  function imageDoneLoaded() {
+    setImageLoading(false);
+  }
+
   return (
     <div className="max-w-md mx-auto text-pink-800 py-4">
+
+      <div className='flex'>
+        <div className='flex-1'></div>
+        <Link href={"/about"} className="font-mono underline">about</Link>
+      </div>
+
       <label className='mb-2 flex items-center'>
         <input type="checkbox" className="form-checkbox rounded border border-pink-300 text-pink-500 mr-2 focus:ring focus:ring-transparent"
           checked={withReply}
@@ -79,7 +91,7 @@ export default function Home() {
         <span className='text-neutral-400'>include parent?</span>
       </label>
       <div className="flex shadow-sm mb-5">
-        <input type="text" className="p-2 flex-1 border border-pink-200 rounded-l-md focus:border-pink-300 focus:ring focus:ring-inset focus:ring-pink-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="Cast hash to tweet: 0xf038abb..."
+        <input type="text" className="p-2 flex-1 border border-pink-200 rounded-l-md focus:border-pink-300 focus:ring focus:ring-inset focus:ring-pink-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="searchcaster or discove link, or a casthash"
           onChange={(e) => setUserInput(e.target.value)}
           value={userInput}
           onKeyDown={(e) => {
@@ -88,16 +100,27 @@ export default function Home() {
             }
           }}
         />
-        <button className="font-mono bg-pink-300 rounded-r-md py-2 px-4 hover:bg-pink-600 hover:text-pink-50 transition focus:outline-none" onClick={() => {
-          makeImage();
-        }}>Make</button>
+        {!imageLoading ?
+          <button className="font-mono bg-pink-300 rounded-r-md py-2 px-4 hover:bg-pink-600 hover:text-pink-50 transition focus:outline-none" onClick={() => {
+            makeImage();
+          }}>Make</button>
+          :
+          <button className="font-mono bg-neutral-300 rounded-r-md py-2 px-4 focus:outline-none text-neutral-500 hover:pointer-none">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 animate-spin">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
+            </svg>
+          </button>
+        }
       </div>
 
       {imageSrc != "" &&
-        <img src={imageSrc} alt="" className='rounded-t-2xl' />
+        <div className='relative'>
+          {imageLoading && <div className='h-full w-full backdrop-blur-md absolute'></div>}
+          <img src={imageSrc} alt="" onLoad={imageDoneLoaded} className='rounded-t-2xl' />
+        </div>
       }
 
-      {imageSrc != "" &&
+      {/* {imageSrc != "" &&
         <div className="flex">
           <input type="text" className="p-2 flex-1 border-l border-b border-pink-200 rounded-bl-2xl focus:outline-none focus:border-pink-300 focus:ring-inset focus:ring-pink-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="by @whatever cc @placeholder"
             onChange={(e) => setTweetInput(e.target.value)}
@@ -112,7 +135,7 @@ export default function Home() {
             sendTweet();
           }}>Tweet</button>
         </div>
-      }
+      } */}
     </div>
   );
 }
