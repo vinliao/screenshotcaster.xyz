@@ -2,11 +2,12 @@ import { useState } from 'react';
 
 export default function Home() {
   const [tweetInput, setTweetInput] = useState("");
-  const [castHash, setCastHash] = useState("");
+  const [userInput, setUserInput] = useState("");
   const [imageSrc, setImageSrc] = useState("");
   const [withReply, setWithReply] = useState(false);
 
-  async function makeImage() {
+  function callImageAPI(castHash) {
+    console.log(`making image ${castHash}`);
     const dev = process.env.NODE_ENV !== 'production';
     const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
     let imageUrl;
@@ -18,6 +19,28 @@ export default function Home() {
     }
 
     setImageSrc(imageUrl);
+  }
+
+  function isCastHash(inputString) {
+    if (inputString.length == 66 && inputString.startsWith('0x')) return true;
+    return false;
+  }
+
+  async function makeImage() {
+
+    if (isCastHash(userInput)) {
+      callImageAPI(userInput);
+    } else {
+      const url = new URL(userInput);
+      if (url.host == 'www.searchcaster.xyz' || url.host == 'searchcaster.xyz') {
+        const { searchParams } = new URL(userInput);
+        const searchcasterCastHash = searchParams.get("merkleRoot");
+        if (isCastHash(searchcasterCastHash)) callImageAPI(searchcasterCastHash);
+      } else if (url.host == "www.discove.xyz" || url.host == 'discove.xyz') {
+        const discoveCastHash = url.pathname.replace('/casts/', '');
+        if (isCastHash(discoveCastHash)) callImageAPI(discoveCastHash);
+      }
+    }
   }
 
   async function sendTweet() {
@@ -36,6 +59,7 @@ export default function Home() {
       body: tweetInput
     });
 
+    setUserInput('');
     setCastHash('');
     setTweetInput('');
     setImageSrc('');
@@ -47,17 +71,17 @@ export default function Home() {
 
   return (
     <div className="max-w-md mx-auto text-pink-800 py-4">
-      <div className='mb-2 flex items-center'>
-        <input type="checkbox" className="form-checkbox rounded text-pink-500 mr-2 focus:border-0 active:border-0"
+      <label className='mb-2 flex items-center'>
+        <input type="checkbox" className="form-checkbox rounded border border-pink-300 text-pink-500 mr-2 focus:ring focus:ring-transparent"
           checked={withReply}
           onChange={setReplyChecked}
         />
-        <span>include reply?</span>
-      </div>
+        <span className='text-neutral-400'>include parent?</span>
+      </label>
       <div className="flex shadow-sm mb-5">
         <input type="text" className="p-2 flex-1 border border-pink-200 rounded-l-md focus:border-pink-300 focus:ring focus:ring-inset focus:ring-pink-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="Cast hash to tweet: 0xf038abb..."
-          onChange={(e) => setCastHash(e.target.value)}
-          value={castHash}
+          onChange={(e) => setUserInput(e.target.value)}
+          value={userInput}
           onKeyDown={(e) => {
             if (e.key == "Enter" && e.ctrlKey) {
               makeImage();
