@@ -92,7 +92,7 @@ export default function Home() {
         <span className='text-neutral-400'>include parent cast?</span>
       </label>
       <div className="flex shadow-sm">
-        <input type="text" className="p-2 flex-1 border border-purple-200 rounded-tl-lg focus:border-purple-300 focus:ring focus:ring-inset focus:ring-purple-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="searchcaster or discove link, or a casthash"
+        <input type="text" className="p-2 flex-1 border border-b-0 border-purple-200 rounded-tl-lg focus:border-purple-300 focus:ring focus:ring-inset focus:ring-purple-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="searchcaster or discove link, or a casthash"
           onChange={(e) => setUserInput(e.target.value)}
           value={userInput}
           onKeyDown={(e) => {
@@ -106,11 +106,18 @@ export default function Home() {
             makeImage();
           }}>Make</button>
           :
-          <button className="font-mono bg-neutral-300 rounded-tr-lg py-2 px-4 focus:outline-none text-neutral-500 hover:pointer-none">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 animate-spin">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
-            </svg>
-          </button>
+          <AnimatePresence>
+            <motion.button className="font-mono bg-neutral-300 rounded-tr-lg py-2 px-4 focus:outline-none text-neutral-500 hover:pointer-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0 }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 animate-spin">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
+              </svg>
+            </motion.button>
+          </AnimatePresence>
         }
       </div>
 
