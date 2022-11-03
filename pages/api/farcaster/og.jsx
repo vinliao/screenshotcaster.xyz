@@ -7,7 +7,7 @@ export const config = {
 export default async function handler(req) {
   const { searchParams } = new URL(req.url);
   const castHash = searchParams.get("castHash");
-  const reply = searchParams.get("reply");
+  const parent = searchParams.get("parent");
 
   const searchcasterUrl = "https://searchcaster.xyz/api/search?merkleRoot=";
   const searchcasterResponse = await fetch(`${searchcasterUrl}${castHash}`);
@@ -26,7 +26,7 @@ export default async function handler(req) {
 
   const parentCastHash = theCast.body.data.replyParentMerkleRoot;
 
-  if (reply && parentCastHash) {
+  if (parent && parentCastHash) {
     const parentSearchcasterResponse = await fetch(
       `${searchcasterUrl}${parentCastHash}`
     );
@@ -149,9 +149,7 @@ export default async function handler(req) {
             <div tw="flex flex-col shrink">
               <div tw="flex">
                 <span tw="text-purple-400 text-xl mr-2">{castDisplayName}</span>
-                <span tw="text-purple-400 text-xl">
-                  @{castUsername}
-                </span>
+                <span tw="text-purple-400 text-xl">@{castUsername}</span>
               </div>
               <div
                 tw="text-purple-800 text-2xl"

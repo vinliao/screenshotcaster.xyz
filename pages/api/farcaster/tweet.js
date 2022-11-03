@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     let imageData;
     if (reply) {
       console.log('with reply');
-      imageData = await fetch(`${serverUrl}/api/farcaster/og?castHash=${castHash}&reply=true`);
+      imageData = await fetch(`${serverUrl}/api/farcaster/og?castHash=${castHash}&parent=true`);
     } else {
       console.log('without reply');
       imageData = await fetch(`${serverUrl}/api/farcaster/og?castHash=${castHash}`);

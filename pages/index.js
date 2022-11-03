@@ -13,7 +13,7 @@ export default function Home() {
     let imageUrl;
 
     if (withReply) {
-      imageUrl = `${serverUrl}/api/farcaster/og?castHash=${castHash}&reply=true`;
+      imageUrl = `${serverUrl}/api/farcaster/og?castHash=${castHash}&parent=true`;
     } else {
       imageUrl = `${serverUrl}/api/farcaster/og?castHash=${castHash}`;
     }
@@ -49,7 +49,7 @@ export default function Home() {
     let fetchUrl;
 
     if (withReply) {
-      fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHash}&reply=true`;
+      fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHash}&parent=true`;
     } else {
       fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHash}`;
     }
