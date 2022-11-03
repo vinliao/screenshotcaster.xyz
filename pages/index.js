@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import { saveAs } from 'file-saver';
 
 export default function Home() {
   const [tweetInput, setTweetInput] = useState("");
@@ -75,6 +76,10 @@ export default function Home() {
     setImageLoading(false);
   }
 
+  function downloadImage() {
+    saveAs(imageSrc, 'image.png');
+  }
+
   return (
     <div className="max-w-md mx-auto text-pink-800 py-4">
 
@@ -117,6 +122,14 @@ export default function Home() {
         <div className='relative'>
           {imageLoading && <div className='h-full w-full backdrop-blur-md absolute'></div>}
           <img src={imageSrc} alt="" onLoad={imageDoneLoaded} className='rounded-t-2xl' />
+        </div>
+      }
+
+      {imageSrc != "" && !imageLoading &&
+        <div className="flex">
+          <button className="font-mono bg-pink-300 rounded-b-2xl py-2 px-4 hover:bg-pink-600 hover:text-pink-50 transition focus:outline-none flex-1" onClick={() => {
+            downloadImage();
+          }}>download</button>
         </div>
       }
 
