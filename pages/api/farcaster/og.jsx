@@ -14,11 +14,13 @@ export default async function handler(req) {
   const allCasts = await searchcasterResponse.json();
   const totalCasts = allCasts.meta.count;
   const theCast = allCasts.casts[totalCasts - 1];
-  const castText = theCast.body.data.text;
   const castUsername = theCast.body.username;
   const castAvatar = theCast.meta.avatar;
+  const castDisplayName = theCast.meta.displayName;
 
-  // link messes with the css overflow,
+  let castText = theCast.body.data.text;
+  // delete this when fix has been merged upstream
+  castText = castText.replaceAll("\n\n", "\nᅠ\n"); // LMFAOOOOOOOOOOOOOOOOOOOOOO
   const urlRegex = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/g;
   const castTextWithoutUrl = castText.replaceAll(urlRegex, "[link]");
 
@@ -31,9 +33,13 @@ export default async function handler(req) {
     const parentAllCasts = await parentSearchcasterResponse.json();
     const parentTotalCasts = parentAllCasts.meta.count;
     const parentTheCast = parentAllCasts.casts[parentTotalCasts - 1];
-    const parentCastText = parentTheCast.body.data.text;
     const parentCastUsername = parentTheCast.body.username;
     const parentCastAvatar = parentTheCast.meta.avatar;
+    const parentCastDisplayName = parentTheCast.meta.displayName;
+
+    let parentCastText = parentTheCast.body.data.text;
+    parentCastText = parentCastText.replaceAll("\n\n", "\nᅠ\n");
+
     const parentCastTextWithoutUrl = parentCastText.replaceAll(
       urlRegex,
       "[link]"
@@ -61,7 +67,14 @@ export default async function handler(req) {
                 tw="w-16 h-16 rounded-full mr-5 self-start"
               ></img>
               <div tw="flex flex-col shrink">
-                <span tw="text-neutral-400 text-lg">@{parentCastUsername}</span>
+                <div tw="flex">
+                  <span tw="text-neutral-500 text-lg mr-2">
+                    {parentCastDisplayName}
+                  </span>
+                  <span tw="text-neutral-400 text-lg">
+                    @{parentCastUsername}
+                  </span>
+                </div>
                 <span
                   tw="text-neutral-400 text-xl"
                   style={{ whiteSpace: "pre-line" }}
@@ -80,7 +93,12 @@ export default async function handler(req) {
                 tw="w-16 h-16 rounded-full mr-5 self-start"
               ></img>
               <div tw="flex flex-col shrink">
-                <span tw="text-purple-400 text-xl">@{castUsername}</span>
+                <div tw="flex">
+                  <span tw="text-purple-500 text-xl mr-2">
+                    {castDisplayName}
+                  </span>
+                  <span tw="text-purple-400 text-xl">@{castUsername}</span>
+                </div>
                 <span
                   tw="text-purple-800 text-2xl"
                   style={{ whiteSpace: "pre-line" }}
@@ -130,13 +148,16 @@ export default async function handler(req) {
               tw="w-16 h-16 rounded-full mr-5 self-start"
             ></img>
             <div tw="flex flex-col shrink">
-              <span tw="text-purple-400 text-xl">@{castUsername}</span>
-              <span
+              <div tw="flex mb-4">
+                <span tw="text-purple-500 text-xl mr-2">{castDisplayName}</span>
+                <span tw="text-purple-400 text-xl">@{castUsername}</span>
+              </div>
+              <div
                 tw="text-purple-800 text-2xl"
                 style={{ whiteSpace: "pre-line" }}
               >
                 {castTextWithoutUrl}
-              </span>
+              </div>
             </div>
           </div>
         </div>
