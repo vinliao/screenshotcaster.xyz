@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { saveAs } from 'file-saver';
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
   const [tweetInput, setTweetInput] = useState("");
@@ -52,20 +53,20 @@ export default function Home() {
     let fetchUrl;
 
     if (withReply) {
-      fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHash}&parent=true`;
+      fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHashForTweeting}&parent=true`;
     } else {
-      fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHash}`;
+      fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHashForTweeting}`;
     }
 
-    await fetch(fetchUrl, {
-      method: "POST",
-      body: tweetInput
-    });
+    console.log(fetchUrl);
+    // await fetch(fetchUrl, {
+    //   method: "POST",
+    //   body: tweetInput
+    // });
 
-    setUserInput('');
-    setCastHash('');
-    setTweetInput('');
-    setImageSrc('');
+    // setUserInput('');
+    // setTweetInput('');
+    // setImageSrc('');
   }
 
   function setReplyChecked() {
@@ -120,7 +121,16 @@ export default function Home() {
 
       {imageSrc != "" &&
         <div className='relative'>
-          {imageLoading && <div className='h-full w-full backdrop-blur-md absolute'></div>}
+          <AnimatePresence>
+            {imageLoading &&
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className='h-full w-full backdrop-blur-md absolute'></motion.div>
+            }
+          </AnimatePresence>
           <img src={imageSrc} alt="" onLoad={imageDoneLoaded} className='rounded-t-2xl' />
         </div>
       }
