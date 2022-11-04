@@ -45,28 +45,6 @@ export default function Home() {
     }
   }
 
-  async function sendTweet() {
-    const dev = process.env.NODE_ENV !== 'production';
-    const serverUrl = dev ? 'http://localhost:3000' : 'https://bot-monorepo.vercel.app';
-    let fetchUrl;
-
-    if (withReply) {
-      fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHashForTweeting}&parent=true`;
-    } else {
-      fetchUrl = `${serverUrl}/api/farcaster/tweet?castHash=${castHashForTweeting}`;
-    }
-
-    console.log(fetchUrl);
-    // await fetch(fetchUrl, {
-    //   method: "POST",
-    //   body: tweetInput
-    // });
-
-    // setUserInput('');
-    // setTweetInput('');
-    // setImageSrc('');
-  }
-
   function setReplyChecked() {
     setWithReply(!withReply);
   }
