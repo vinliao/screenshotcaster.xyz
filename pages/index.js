@@ -119,7 +119,7 @@ export default function Home() {
       </div>
 
       {imageSrc != "" &&
-        <div className='relative mb-5'>
+        <div className='relative mb-2'>
           <AnimatePresence>
             {imageLoading &&
               <motion.div
