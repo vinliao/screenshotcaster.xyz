@@ -14,7 +14,7 @@ export default function Home() {
   function callImageAPI(castHash) {
     console.log(`making image ${castHash}`);
     const dev = process.env.NODE_ENV !== 'production';
-    const serverUrl = dev ? 'http://localhost:3000' : 'https://screenshotcaster-xyz.vercel.app/';
+    const serverUrl = dev ? 'http://localhost:3000' : 'https://screenshotcaster-xyz.vercel.app';
     let imageUrl;
 
     if (withReply) {
