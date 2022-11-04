@@ -3,9 +3,8 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
-  const [tweetInput, setTweetInput] = useState("");
   const [userInput, setUserInput] = useState("");
-  const [imageSrc, setImageSrc] = useState("");
+  const [imageSrc, setImageSrc] = useState("/default.png");
   const [withReply, setWithReply] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
 
