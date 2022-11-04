@@ -1,5 +1,5 @@
 {
-  "name": "bot-monorepo",
+  "name": "screenshotcaster",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@big-whale-labs/botcaster": "^0.0.6",
     "@vercel/og": "^0.0.20",
     "autoprefixer": "^10.4.13",
     "canonicalize": "^1.0.8",
@@ -21,8 +20,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-textarea-autosize": "^8.3.4",
-    "tailwindcss": "^3.2.1",
-    "twitter-api-v2": "^1.12.9"
+    "tailwindcss": "^3.2.1"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
