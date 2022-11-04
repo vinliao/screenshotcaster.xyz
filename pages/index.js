@@ -74,7 +74,7 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-md mx-auto text-purple-800 py-4 px-1">
+    <div className="max-w-md mx-auto text-purple-800 py-4 px-2">
 
       <div className='flex'>
         <div className='flex-1'></div>
