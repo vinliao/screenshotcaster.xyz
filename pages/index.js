@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from "framer-motion";
+import { saveAs } from 'file-saver';
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [imageSrc, setImageSrc] = useState("/default.png");
   const [withReply, setWithReply] = useState(false);
   const [imageLoading, setImageLoading] = useState(false);
+  const [showDownloadImage, setShowDownloadImage] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   function callImageAPI(castHash) {
     console.log(`making image ${castHash}`);
@@ -51,6 +54,23 @@ export default function Home() {
 
   function imageDoneLoaded() {
     setImageLoading(false);
+  }
+
+  function downloadImage() {
+    setShowDownloadImage(true);
+    saveAs(imageSrc);
+
+    setTimeout(function () {
+      setShowDownloadImage(false);
+    }, 5000);
+  }
+
+  function copyLink() {
+    setLinkCopied(true);
+    navigator.clipboard.writeText(imageSrc);
+    setTimeout(function () {
+      setLinkCopied(false);
+    }, 2000);
   }
 
   return (
@@ -120,15 +140,21 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <button className="font-mono underline focus:outline-none" onClick={() => {
-            downloadImage();
-          }}>download</button>
+          <button className="font-mono underline focus:outline-none" onClick={downloadImage}>download</button>
           <span> - </span>
-          <button className="font-mono underline focus:outline-none" onClick={() => {
-            downloadImage();
-          }}>copy image link</button>
+          <button className="font-mono underline focus:outline-none"
+            onClick={copyLink}
+          >copy image link</button>
         </motion.div>
       }
-    </div>
+
+      {showDownloadImage &&
+        <span className='text-neutral-400'>downloading...</span>
+      }
+
+      {linkCopied &&
+        <span className='text-neutral-400'>link copied</span>
+      }
+    </div >
   );
 }
