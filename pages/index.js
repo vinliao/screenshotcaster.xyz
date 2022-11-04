@@ -54,7 +54,7 @@ export default function Home() {
   }
 
   return (
-    <div className="max-w-md mx-auto text-purple-800 py-4">
+    <div className="max-w-md mx-auto text-purple-800 py-4 px-1">
 
       <div className='flex'>
         <div className='flex-1'></div>
@@ -99,7 +99,7 @@ export default function Home() {
       </div>
 
       {imageSrc != "" &&
-        <div className='relative'>
+        <div className='relative mb-5'>
           <AnimatePresence>
             {imageLoading &&
               <motion.div
@@ -114,30 +114,21 @@ export default function Home() {
         </div>
       }
 
-      {/* {imageSrc != "" && !imageLoading &&
-        <div className="flex">
-          <button className="font-mono bg-purple-300 rounded-b-2xl py-2 px-4 hover:bg-purple-600 hover:text-purple-50 transition focus:outline-none flex-1" onClick={() => {
+      {imageSrc != "" && imageSrc != "/default.png" && !imageLoading &&
+        <motion.div className="flex space-x-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <button className="font-mono underline focus:outline-none" onClick={() => {
             downloadImage();
           }}>download</button>
-        </div>
-      } */}
-
-      {/* {imageSrc != "" &&
-        <div className="flex">
-          <input type="text" className="p-2 flex-1 border-l border-b border-purple-200 rounded-bl-2xl focus:outline-none focus:border-purple-300 focus:ring-inset focus:ring-purple-300 focus:ring-opacity-50 placeholder-gray-300" placeholder="by @whatever cc @placeholder"
-            onChange={(e) => setTweetInput(e.target.value)}
-            value={tweetInput}
-            onKeyDown={(e) => {
-              if (e.key == "Enter" && e.ctrlKey) {
-                sendTweet();
-              }
-            }}
-          />
-          <button className="font-mono bg-purple-300 rounded-br-2xl py-2 px-4 hover:bg-purple-600 hover:text-purple-50 transition focus:outline-none" onClick={() => {
-            sendTweet();
-          }}>Tweet</button>
-        </div>
-      } */}
+          <span> - </span>
+          <button className="font-mono underline focus:outline-none" onClick={() => {
+            downloadImage();
+          }}>copy image link</button>
+        </motion.div>
+      }
     </div>
   );
 }
